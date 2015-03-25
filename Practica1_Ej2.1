@@ -1,0 +1,57 @@
+include ejercicio2.hs
+
+--2.1.5
+mapSumaPar ::[(Int,Int)] -> [Int]
+mapSumaPar [] = []
+mapSumaPar ((y1,y2):ys) = (y1 + y2) : mapSumaPar ys
+--mapSumaPar (y:ys) = sumarPar y : mapSumaPar ys
+
+--2.1.1
+sumatoria :: [Int] -> Int
+sumatoria [] = 0
+sumatoria (y:ys) = y + sumatoria ys
+
+--2.1.2
+longitud :: [a] -> Int
+longitud [] = 0
+longitud (y:ys) = 1 + longitud ys
+
+--2.1.3
+promedio :: [Int] -> Float
+promedio [] = 0
+-- la division no va a funcionar con INT, hay que usar float
+promedio (x:xs) = sumatoria (x:xs) / longitud (x:xs)
+
+--2.1.4
+mapSucesor :: [Int] -> [Int]
+mapSucesor [] = 0
+mapSucesor (x:xs) = x+1 : mapSucesor xs
+
+--2.1.6
+mapMaxDelPar::[(Int,Int)] -> [Int]
+mapMaxDelPar [] = 0
+mapMaxDelPar (x:xs) = maxDelPar x : maxDelPar xs
+
+--2.1.7
+todoVerdad :: [Bool] -> Bool
+todoVerdad [] = False
+todoVerdad (x:xs) = (x == True) && todoVerdad xs
+
+--2.1.8
+algunaVerdad :: [Bool] -> Bool
+algunaVerdad [] = False
+algunaVerdad (x:xs) = (x == True) || algunaVerdad xs
+
+--2.1.9
+pertenece :: Eq a => a -> [a] -> Bool
+pertenece x [] = False
+pertenece x (y:ys) = x==y || pertenece ys
+
+--2.1.10
+apariciones :: Eq a => a -> [a] -> Int
+apariciones x [] = 0
+apariciones x (y:ys) = If x==y
+					   then 1 + apariciones x ys
+					   else apariciones x ys
+
+--2.1.11
