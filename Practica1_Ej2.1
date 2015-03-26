@@ -67,3 +67,42 @@ apariciones x (y:ys) = if x==y
                        else apariciones x ys
 
 --2.1.11
+filtrarMenoresA :: Int -> [Int] -> [Int]
+filtrarMenoresA n [] = []
+filtrarMenoresA n (x:xs) = if n < x    
+                           then x : filtrarMenoresA n xs
+                           else filtrarMenoresA n xs
+
+--2.1.12
+filtrarElemento :: Eq a => a -> [a] -> [a]
+filtrarElemento a [] = []
+filtrarElemento a (x:xs) = if a == x
+                           then filtrarElemento a xs
+                           else x : filtrarElemento a xs
+
+--2.1.13
+-- Dada una lista de listas, devuelve la lista de sus longitudes. 
+-- Aplique esta funcion a la lista de strings ["Estructuras", "de", "datos"] y observe el resultado. -----> [11,2,5]
+mapLongitudes :: [[a]] -> [Int]
+mapLongitudes [] = []
+mapLongitudes (x:xs) = longitud x : mapLongitudes xs
+
+--2.1.14
+--Dados un numero n y una lista de listas, devuelve la lista de aquellas listas que tienen mas de n elementos.
+longitudMayorA :: Int -> [[a]] -> [[a]]
+longitudMayorA n [] = []
+longitudMayorA n (x:xs) = if longitud x > n
+                          then x : longitudMayorA n xs
+                          else longitudMayorA n xs
+
+--2.1.15
+--Dado un elemento e y una lista xs, ubica a e entre medio de todos los elementos de xs
+intercalar :: a -> [a] -> [a]
+intercalar e [] = []
+intercalar e (x:xs) = (x : []) ++ [e] ++ intercalar e xs
+
+--2.1.16
+-- Dados una lista y un elemento, devuelve una lista con ese elemento agregado al final de la lista.
+snoc :: [a] -> a -> [a]
+snoc [] n = [n]
+snoc ys n = ys ++ [n]
