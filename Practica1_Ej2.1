@@ -106,3 +106,38 @@ intercalar e (x:xs) = (x : []) ++ [e] ++ intercalar e xs
 snoc :: [a] -> a -> [a]
 snoc [] n = [n]
 snoc ys n = ys ++ [n]
+
+--2.1.17 NO FUNCIONA, REVISAR
+-- Dadas dos listas devuelve la lista con todos los elementos de la primera lista y todos los
+-- elementos de la segunda a continuacion. Definida en Haskell como ++
+append :: [a] -> [a] -> [a]
+append [] [] = []
+append (y:ys) (x:xs) = append (snoc (x:ys) x) xs
+
+--2.1.18
+--Dada una lista de listas, devuelve una unica lista con todos sus elementos.
+aplanar :: [[a]] -> [a]
+aplanar [] = []
+aplanar (x:xs) = x ++ aplanar xs
+
+--2.1.19
+-- Dada una lista devuelve la lista con los mismos elementos de atras para adelante. Definida
+-- en Haskell como reverse.
+--reversa :: [a] -> [a]
+
+--2.1.20
+--Dadas dos listas de enteros, devuelve una lista donde el elemento en la posicion n es el
+--maximo entre el elemento n de la primera lista y de la segunda lista, teniendo en cuenta que
+--las listas no necesariamente tienen la misma longitud.
+zipMaximos :: [Int] -> [Int] -> [Int]
+zipMaximos [] [] = []
+zipMaximos xs [] = xs
+zipMaximos [] xs = xs
+zipMaximos (x:xs) (y:ys) = (maximo x y) : (zipMaximos xs ys)
+
+--2.1.21
+--Dadas dos listas de enteros de igual longitud, devuelve una lista de pares (min; max), donde
+--min y max son el minimo y el maximo entre los elementos de ambas listas en la misma posicion.
+zipSort :: [Int] -> [Int] -> [(Int, Int)]
+zipSort [] [] = []
+zipSort (x:xs) (y:ys) = ( min x y , maximo x y) : (zipSort xs ys)
