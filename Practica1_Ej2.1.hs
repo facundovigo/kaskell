@@ -141,3 +141,5 @@ zipMaximos (x:xs) (y:ys) = (maximo x y) : (zipMaximos xs ys)
 zipSort :: [Int] -> [Int] -> [(Int, Int)]
 zipSort [] [] = []
 zipSort (x:xs) (y:ys) = ( min x y , maximo x y) : (zipSort xs ys)
+
+---prueba para ver si puedo grabar
