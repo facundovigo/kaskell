@@ -60,3 +60,61 @@ promedioEdad xs = (sumaEdades xs) `div` (length xs)
 sumaEdades :: [Persona] -> Int
 sumaEdades [] = 0
 sumaEdades (x:xs) = edad x + sumaEdades xs
+
+
+--elMasViejo :: [Persona] -> Persona
+--Dada una lista de personas devuelve la persona mas vieja de la lista. La lista al menos posee una persona.
+
+
+--3. Definir los tipos de datos Pokemon, como un TipoDePokemon (agua, fuego o planta) y un porcentaje de energıa; 
+--y Entrenador, como un nombre y una lista de Pokemon. Luego definir las siguientes funciones:
+
+data Pokemon = ConsPokemon TipoDePokemon PorcentajeEnergia 
+data TipoDePokemon = Agua | Fuego | Planta
+type PorcentajeEnergia = Int
+
+data Entrenador = ConsEntrenador Nombre [Pokemon] 
+
+esIgual :: TipoDePokemon -> TipoDePokemon -> Bool
+esIgual Agua Agua = True
+esIgual Fuego Fuego = True
+esIgual Planta Planta = True
+esIgual Agua Fuego = False
+esIgual Fuego Agua = False
+esIgual Agua Planta = False
+esIgual Planta Agua = False
+esIgual Fuego Planta = False
+esIgual Planta Fuego= False
+
+dameTipo :: Pokemon -> TipoDePokemon
+dameTipo (ConsPokemon t pe) = t
+
+elementoGanador :: TipoDePokemon -> TipoDePokemon
+--Dado un TipoDePokemon devuelve el elemento que le gana a ese. 
+--Agua le gana a fuego, 
+--fuego a planta y 
+--planta a agua.
+elementoGanador Agua = Fuego
+elementoGanador Fuego = Planta
+elementoGanador Planta = Agua
+
+
+--Dados dos pokemon indica si el primero le puede ganar al segundo. Se considera que gana si su elemento es opuesto al del otro pokemon. Si poseen el mismo elemento se considera que no gana.
+leGanaA :: Pokemon -> Pokemon -> Bool
+leGanaA (ConsPokemon t1 pe1) (ConsPokemon t2 pe2) = esIgual (elementoGanador t1) t2
+
+--Agrega un pokemon a la lista de pokemon del entrenador.
+capturarPokemon :: Pokemon -> Entrenador -> Entrenador
+capturarPokemon p (ConsEntrenador nom xs) = ConsEntrenador nom (p:xs)
+
+--Devuelve la cantidad de pokemons que posee el entrenador.
+cantidadDePokemons :: Entrenador -> Int
+cantidadDePokemons (ConsEntrenador nom xs) = length xs
+
+--Devuelve la cantidad de pokemons de determinado tipo que posee el entrenador.
+cantidadDePokemonsDeTipo :: TipoDePokemon -> Entrenador -> Int
+cantidadDePokemonsDeTipo t (ConsEntrenador nom []) = 0
+cantidadDePokemonsDeTipo t (ConsEntrenador nom (x:xs)) = if esIgual t (dameTipo x)
+                                                         then 1 + (cantidadDePokemonsDeTipo t (ConsEntrenador nom xs))
+                                                         else cantidadDePokemonsDeTipo t (ConsEntrenador nom xs)
+
