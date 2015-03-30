@@ -1,2 +1,0 @@
-# kaskell
-ejercicios de haskell
