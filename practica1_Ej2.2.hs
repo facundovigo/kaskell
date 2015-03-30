@@ -22,21 +22,28 @@ replicarN :: Int -> a -> [a]
 replicarN 0 e = []
 replicarN n e = e : replicarN (n-1) e
 
-{-
+
 
 --Dados dos numeros n y m devuelve una lista cuyos elementos sean los numeros entre n y m (incluidos).
 -- PRECONDICIÓN: n debe ser <= m, nunca >
 desdeHasta :: Int -> Int -> [Int]
---desdeHasta n n = 
-desdeHasta n m = if n > m
-                 then n : desdeHasta (n+1) m
+desdeHasta n m = if n < m
+                 then n : (desdeHasta (n+1) m)
                  else n : []
 
 --Dados un numero n y una lista xs, devuelve una lista con los primeros n elementos de xs.
 --Si xs posee menos de n elementos, se devuelve la lista completa.
 takeN :: Int -> [a] -> [a]
+takeN n ys = if n > length ys
+             then ys
+             else tomar n ys
 
-
+tomar :: Int -> [a] -> [a]
+tomar n [] = []
+tomar n (x:xs) = if n > 0
+                 then x : takeN (n-1) xs
+                 else []
+{-
 --Dados un numero n y una lista xs, devuelve una lista sin los primeros n elementos de lista
 --recibida. Si la lista posee menos de n elementos, se devuelve una lista vacia.
 dropN :: Int -> [a] -> [a]
