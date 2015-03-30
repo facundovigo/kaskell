@@ -61,10 +61,9 @@ sumaEdades :: [Persona] -> Int
 sumaEdades [] = 0
 sumaEdades (x:xs) = edad x + sumaEdades xs
 
-
---elMasViejo :: [Persona] -> Persona
+elMasViejo :: [Persona] -> Persona
 --Dada una lista de personas devuelve la persona mas vieja de la lista. La lista al menos posee una persona.
-
+-- PRECONDICIÓN: la lista posee una persona
 
 --3. Definir los tipos de datos Pokemon, como un TipoDePokemon (agua, fuego o planta) y un porcentaje de energıa; 
 --y Entrenador, como un nombre y una lista de Pokemon. Luego definir las siguientes funciones:
@@ -118,3 +117,38 @@ cantidadDePokemonsDeTipo t (ConsEntrenador nom (x:xs)) = if esIgual t (dameTipo 
                                                          then 1 + (cantidadDePokemonsDeTipo t (ConsEntrenador nom xs))
                                                          else cantidadDePokemonsDeTipo t (ConsEntrenador nom xs)
 
+--Dados un entrenador y un pokemon devuelve True si el entrenador posee un pokemon que le gane ese pokemon.
+lePuedeGanar :: Entrenador -> Pokemon -> Bool
+lePuedeGanar (ConsEntrenador nom []) p = False
+lePuedeGanar (ConsEntrenador nom (x:xs)) p = leGanaA x p || lePuedeGanar (ConsEntrenador nom xs) p
+
+-- Dados un tipo de pokemon y dos entrenadores, devuelve True si ambos entrenadores
+-- tiene al menos un pokemon de ese tipo y que tenga energia para pelear.
+{-
+puedenPelear :: TipoDePokemon -> Entrenador -> Entrenador -> Bool
+puedenPelear t e1 e2 = pelea t e1 || pelea t e2
+
+pelea :: TipoDePokemon -> Entrenador -> Bool
+pelea t (ConsEntrenador nom []) = False
+pelea t (ConsEntrenador nom (x:xs)) = cantidadDePokemonsDeTipo t (ConsEntrenador nom (x:xs))
+-}
+--Dado un entrenador devuelve True si ese entrenador posee al menos un pokemon de cada tipo posible.
+esExperto :: Entrenador -> Bool
+esExperto (ConsEntrenador nom []) = False
+esExperto entrenador = cantidadDePokemonsDeTipo Agua entrenador > 0 &&
+                       cantidadDePokemonsDeTipo Fuego entrenador > 0 &&
+                       cantidadDePokemonsDeTipo Planta entrenador > 0
+-- PRUEBAS
+-- esExperto (ConsEntrenador "zaraza" [(ConsPokemon Agua 1),(ConsPokemon Fuego 2),(ConsPokemon Planta 3)]) ---> TRUE
+-- esExperto (ConsEntrenador "zaraza" [(ConsPokemon Agua 1),(ConsPokemon Agua 2),(ConsPokemon Planta 3)]) ---> FALSE
+
+--Dada una lista de entrenadores devuelve una lista con todos los pokemon de cada entrenador.
+-- PRECONDICIÓN: supongo que no hay entrenadores sin pokemons asignados
+fiestaPokemon :: [Entrenador] -> [Pokemon]
+fiestaPokemon [] = []
+fiestaPokemon ((ConsEntrenador nom xs):ys) = xs ++ fiestaPokemon ys
+-- PRUEBAS
+--cantidadDePokemonsDeTipo Agua (ConsEntrenador "zaraza" [(ConsPokemon Agua 1),(ConsPokemon Agua 2),(ConsPokemon Planta 3)])
+--cantidadDePokemonsDeTipo Agua (ConsEntrenador "zaraza" [(ConsPokemon Agua 1),(ConsPokemon Agua 2),(ConsPokemon Agua 3)])
+--cantidadDePokemonsDeTipo Planta (ConsEntrenador "zaraza" [(ConsPokemon Agua 1),(ConsPokemon Agua 2),(ConsPokemon Agua 3)])
+--cantidadDePokemonsDeTipo Planta (ConsEntrenador "zaraza" [(ConsPokemon Agua 1),(ConsPokemon Agua 2),(ConsPokemon Planta 3)])
