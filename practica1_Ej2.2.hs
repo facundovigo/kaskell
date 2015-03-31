@@ -22,8 +22,6 @@ replicarN :: Int -> a -> [a]
 replicarN 0 e = []
 replicarN n e = e : replicarN (n-1) e
 
-
-
 --Dados dos numeros n y m devuelve una lista cuyos elementos sean los numeros entre n y m (incluidos).
 -- PRECONDICIÓN: n debe ser <= m, nunca >
 desdeHasta :: Int -> Int -> [Int]
@@ -41,16 +39,23 @@ takeN n ys = if n > length ys
 tomar :: Int -> [a] -> [a]
 tomar n [] = []
 tomar n (x:xs) = if n > 0
-                 then x : takeN (n-1) xs
+                 then x : tomar (n-1) xs
                  else []
-{-
+
 --Dados un numero n y una lista xs, devuelve una lista sin los primeros n elementos de lista
 --recibida. Si la lista posee menos de n elementos, se devuelve una lista vacia.
 dropN :: Int -> [a] -> [a]
+dropN n ys = if n > length ys
+             then []
+             else quitar n ys
+
+quitar :: Int -> [a] -> [a]
+quitar n (x:xs) = if n > 0
+                 then quitar (n-1) xs
+                 else x:xs
 
 
---Dados un numero n y una lista xs, devuelve un par donde la primera componente es la lista
---que resulta de aplicar takeN a xs, y la segunda componente el resultado de aplicar dropN
---a xs. >Conviene utilizar recursion?
+--Dados un numero n y una lista xs, devuelve un par donde la primera componente es la lista que resulta de aplicar takeN a xs, y la segunda componente el resultado de aplicar dropN a xs. ¿Conviene utilizar recursion?
 splitN :: Int -> [a] -> ([a], [a])
--}
+splitN n [] = ([],[])
+splitN n xs = (takeN n xs,dropN n xs)

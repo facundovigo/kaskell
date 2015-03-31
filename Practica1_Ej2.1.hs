@@ -97,9 +97,10 @@ longitudMayorA n (x:xs) = if longitud x > n
 
 --2.1.15
 --Dado un elemento e y una lista xs, ubica a e entre medio de todos los elementos de xs
-intercalar :: a -> [a] -> [a]
-intercalar e [] = []
-intercalar e (x:xs) = (x : []) ++ [e] ++ intercalar e xs -- mepaa q aca estas devolviendo una lista de listas
+intercalarm :: a -> [a] -> [a]
+intercalarm e [] = []
+intercalarm e (x:xs) = (x : []) ++ [e] ++ intercalar e xs -- mepaa q aca estas devolviendo una lista de listas
+
 --2.1.15
 intercalar :: a -> [a] -> [a]
 intercalar _ [] = []
@@ -108,26 +109,30 @@ intercalar  a (x:xs) = x:(a:intercalar a xs)
 
 --2.1.16
 -- Dados una lista y un elemento, devuelve una lista con ese elemento agregado al final de la lista.
-snoc :: [a] -> a -> [a]
-snoc [] n = [n]
-snoc ys n = ys ++ [n]
+snocM :: [a] -> a -> [a]
+snocM [] n = [n]
+snocM ys n = ys ++ [n]
+
 --2.1.16
 -- lo hice asi pero no me anda en caso base, lo mande a la lista y fidel me dijo quye lo piense con recurcion
- snoc :: [a] -> a -> [a]
- snoc [] x = []
- snoc y x  =  reverse (y:reverse x)
---2.1.17 NO FUNCIONA, REVISAR
+snoc :: [a] -> a -> [a]
+snoc [] x = []
+snoc y x  =  reverse (y:reverse x)
+
+--2.1.17
 -- Dadas dos listas devuelve la lista con todos los elementos de la primera lista y todos los
 -- elementos de la segunda a continuacion. Definida en Haskell como ++
-append :: [a] -> [a] -> [a]
-append [] [] = []
-append (y:ys) (x:xs) = append (snoc (x:ys) x) xs
+appendM :: [a] -> [a] -> [a]
+appendM [] [] = []
+appendM ys (x:xs) = appendM (snocM ys x) xs
+
 --2.1.17 a este lo pense asi
- append :: [a] -> [a] -> [a] --saco la linea DE  MI caso base append [] [] por que ta conteplada en la primer linea de codigo
- append  [] x = x
- append  p _ = p 
- append z (x:xs) = append (snoc z x) xs
- 
+
+append :: [a] -> [a] -> [a] --saco la linea DE  MI caso base append [] [] por que ta conteplada en la primer linea de codigo
+append  [] x = x
+append  p _ = p 
+append z (x:xs) = append (snoc z x) xs
+
 --2.1.18
 --Dada una lista de listas, devuelve una unica lista con todos sus elementos.
 aplanar :: [[a]] -> [a]
@@ -152,11 +157,11 @@ reversa s = last s : reversa (init s)
 --Dadas dos listas de enteros, devuelve una lista donde el elemento en la posicion n es el
 --maximo entre el elemento n de la primera lista y de la segunda lista, teniendo en cuenta que
 --las listas no necesariamente tienen la misma longitud.
-zipMaximos :: [Int] -> [Int] -> [Int]
-zipMaximos [] [] = []
-zipMaximos xs [] = xs
-zipMaximos [] xs = xs
-zipMaximos (x:xs) (y:ys) = (maximo x y) : (zipMaximos xs ys)
+zipMaximosM :: [Int] -> [Int] -> [Int]
+zipMaximosM [] [] = []
+zipMaximosM xs [] = xs
+zipMaximosM [] xs = xs
+zipMaximosM (x:xs) (y:ys) = (maximo x y) : (zipMaximos xs ys)
 
 --2.1.20 me gusta mas tu solucion
 zipMaximos :: [Int] -> [Int] -> [Int]
@@ -168,16 +173,15 @@ zipMaximos (x:xs) (y:ys) = if x<y
 --2.1.21
 --Dadas dos listas de enteros de igual longitud, devuelve una lista de pares (min; max), donde
 --min y max son el minimo y el maximo entre los elementos de ambas listas en la misma posicion.
-zipSort :: [Int] -> [Int] -> [(Int, Int)]
-zipSort [] [] = []
-zipSort (x:xs) (y:ys) = ( min x y , maximo x y) : (zipSort xs ys)
+zipSortm :: [Int] -> [Int] -> [(Int, Int)]
+zipSortm [] [] = []
+zipSortm (x:xs) (y:ys) = ( min x y , maximo x y) : (zipSort xs ys)
 
-						   else x:zipMaximos xs ys
 --2.1.21
 --Precondicion: zipSort solo funciona con listas de igual longitudes 
 zipSort :: [Int] -> [Int] -> [(Int,Int)]
 zipSort [] [] = []
-zipSort (x:xs) (y:xs) = if x<y
+zipSort (x:xs) (y:ys) = if x<y
 		then (x,y):zipSort xs ys
 		else (y,x):zipSort xs ys  
 
