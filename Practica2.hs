@@ -21,7 +21,7 @@ siguiente Oeste = Norte
 --2. Definir el tipo de dato Persona, como un nombre la edad de la persona. Realizar las siguientes funciones:
 
 --ConsPersona :: nombre -> edad -> Persona
-data Persona = ConsPersona Nombre Edad 
+data Persona = ConsPersona Nombre Edad deriving Show
 type Nombre = String
 type Edad = Int
 
@@ -64,12 +64,16 @@ sumaEdades (x:xs) = edad x + sumaEdades xs
 elMasViejo :: [Persona] -> Persona
 --Dada una lista de personas devuelve la persona mas vieja de la lista. La lista al menos posee una persona.
 -- PRECONDICIÓN: la lista posee una persona
+elMasViejo [x] = x
+elMasViejo (x:xs) = if edad x > edad (elMasViejo xs)
+                    then x
+                    else elMasViejo xs
 
 --3. Definir los tipos de datos Pokemon, como un TipoDePokemon (agua, fuego o planta) y un porcentaje de energıa; 
 --y Entrenador, como un nombre y una lista de Pokemon. Luego definir las siguientes funciones:
 
-data Pokemon = ConsPokemon TipoDePokemon PorcentajeEnergia 
-data TipoDePokemon = Agua | Fuego | Planta
+data Pokemon = ConsPokemon TipoDePokemon PorcentajeEnergia deriving Show
+data TipoDePokemon = Agua | Fuego | Planta deriving Show
 type PorcentajeEnergia = Int
 
 data Entrenador = ConsEntrenador Nombre [Pokemon] 
@@ -122,16 +126,17 @@ lePuedeGanar :: Entrenador -> Pokemon -> Bool
 lePuedeGanar (ConsEntrenador nom []) p = False
 lePuedeGanar (ConsEntrenador nom (x:xs)) p = leGanaA x p || lePuedeGanar (ConsEntrenador nom xs) p
 
--- Dados un tipo de pokemon y dos entrenadores, devuelve True si ambos entrenadores
--- tiene al menos un pokemon de ese tipo y que tenga energia para pelear.
-{-
+-- Dados un tipo de pokemon y dos entrenadores, devuelve True si ambos entrenadores tiene al menos un pokemon de ese tipo y que tenga energia para pelear.
 puedenPelear :: TipoDePokemon -> Entrenador -> Entrenador -> Bool
-puedenPelear t e1 e2 = pelea t e1 || pelea t e2
+puedenPelear t e1 e2 = pelea t e1 && pelea t e2
 
 pelea :: TipoDePokemon -> Entrenador -> Bool
 pelea t (ConsEntrenador nom []) = False
-pelea t (ConsEntrenador nom (x:xs)) = cantidadDePokemonsDeTipo t (ConsEntrenador nom (x:xs))
--}
+pelea t (ConsEntrenador nom (x:xs)) = tieneEnergia x && esIgual t (dameTipo x) || (pelea t (ConsEntrenador nom xs))
+
+tieneEnergia :: Pokemon -> Bool
+tieneEnergia (ConsPokemon t pe) = pe>0
+
 --Dado un entrenador devuelve True si ese entrenador posee al menos un pokemon de cada tipo posible.
 esExperto :: Entrenador -> Bool
 esExperto (ConsEntrenador nom []) = False
