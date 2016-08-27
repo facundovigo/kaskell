@@ -82,12 +82,7 @@ esIgual :: TipoDePokemon -> TipoDePokemon -> Bool
 esIgual Agua Agua = True
 esIgual Fuego Fuego = True
 esIgual Planta Planta = True
-esIgual Agua Fuego = False
-esIgual Fuego Agua = False
-esIgual Agua Planta = False
-esIgual Planta Agua = False
-esIgual Fuego Planta = False
-esIgual Planta Fuego= False
+esIgual _ _ = False
 
 dameTipo :: Pokemon -> TipoDePokemon
 dameTipo (ConsPokemon t pe) = t
